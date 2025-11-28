@@ -1,20 +1,40 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# StarTrack DEMO
 
-# Run and deploy your AI Studio app
+ระบบติดตามอารมณ์และดาวเด็กดี (StarTrack) คือแอปพลิเคชันตัวอย่างสำหรับติดตามสุขภาพจิตของนักเรียน ให้รางวัลด้วยระบบดาว และวิเคราะห์ข้อมูลสำหรับคุณครูและผู้บริหาร ขับเคลื่อนด้วย **Gemini API**
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/18IntCDux7c_8ATes0n3GOw7yPZNqbbdG
+- **Student Dashboard**: บันทึกไดอารี่ประจำวัน, เช็คอินอารมณ์, รับคำปรึกษาจาก AI, และดูนัดหมายครู
+- **Teacher Dashboard**: จัดการดาวเด็กดี, อนุมัตินัดหมาย, บันทึกอารมณ์ตนเอง
+- **Admin Dashboard**: ดูภาพรวมสถิติอารมณ์ทั้งโรงเรียน
 
-## Run Locally
+## Tech Stack
 
-**Prerequisites:**  Node.js
+- React (Vite)
+- TypeScript
+- Tailwind CSS
+- Lucide React (Icons)
+- Recharts (Charts)
+- @google/genai (Gemini API)
 
+## Getting Started
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+1.  **Clone the repository**
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+3.  **Setup Environment Variables**:
+    - Copy `.env.example` to `.env`
+    - Enter your Google GenAI API Key in `.env`:
+      ```
+      API_KEY=your_actual_api_key
+      ```
+4.  **Run the development server**:
+    ```bash
+    npm run dev
+    ```
+
+## License
+
+MIT
