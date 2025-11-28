@@ -5,10 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>StarTrack DEMO</title>
 
-<!-- CDN -->
-<script src="https://cdn.tailwindcss.com"></script>
+<!-- FIX: Tailwind CDN เวอร์ชันเสถียร -->
+<script src="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.10/dist/tailwind.min.js"></script>
+
+<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- FIX: Chart.js เวอร์ชันที่ทำงานบน GitHub Pages แน่นอน -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <style>
 body {
@@ -21,33 +25,23 @@ body {
 
 <body class="pb-20">
 
-<!-- ========================== HEADER ========================== -->
 <header class="text-center bg-pink-100 border-b-2 border-purple-200 py-6">
   <h1 class="text-4xl font-bold text-purple-600">StarTrack DEMO</h1>
   <p class="text-pink-700 text-lg">ระบบติดตามอารมณ์และดาวเด็กดี</p>
 </header>
 
-<!-- ========================== NAV ========================== -->
 <nav class="text-center bg-blue-50 py-4 sticky top-0 shadow z-50">
-  <button class="rolebtn px-6 py-2 mx-1 rounded-lg bg-purple-100 hover:bg-purple-200"
-          onclick="switchRole('student')">👦 นักเรียน</button>
-  <button class="rolebtn px-6 py-2 mx-1 rounded-lg bg-purple-100 hover:bg-purple-200"
-          onclick="switchRole('teacher')">👩‍🏫 ครู</button>
-  <button class="rolebtn px-6 py-2 mx-1 rounded-lg bg-purple-100 hover:bg-purple-200"
-          onclick="switchRole('admin')">🏫 ผู้บริหาร</button>
-
-  <button class="px-5 py-2 bg-red-400 text-white rounded-lg float-right"
-          onclick="location.reload()">ออกจากระบบ</button>
+  <button onclick="switchRole('student')" class="px-6 py-2 mx-1 rounded-lg bg-purple-100 hover:bg-purple-200">👦 นักเรียน</button>
+  <button onclick="switchRole('teacher')" class="px-6 py-2 mx-1 rounded-lg bg-purple-100 hover:bg-purple-200">👩‍🏫 ครู</button>
+  <button onclick="switchRole('admin')" class="px-6 py-2 mx-1 rounded-lg bg-purple-100 hover:bg-purple-200">🏫 ผู้บริหาร</button>
+  <button onclick="location.reload()" class="px-5 py-2 bg-red-400 text-white rounded-lg float-right">ออกจากระบบ</button>
 </nav>
 
-<!-- ===========================================================
-                      STUDENT SECTION
-=========================================================== -->
+<!-- STUDENT -->
 <section id="student-section" class="max-w-3xl mx-auto mt-8 hidden">
 
   <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
     <h2 class="text-2xl font-bold text-purple-700 mb-3">เลือกอารมณ์วันนี้</h2>
-
     <div class="flex space-x-3 text-4xl">
       <button onclick="selectEmotion('happy')" class="emotion">😄</button>
       <button onclick="selectEmotion('normal')" class="emotion">😐</button>
@@ -56,37 +50,29 @@ body {
       <button onclick="selectEmotion('surprise')" class="emotion">😲</button>
     </div>
 
-    <button onclick="saveEmotion()"
-            class="mt-4 px-5 py-2 bg-purple-600 text-white rounded-lg">บันทึกอารมณ์</button>
+    <button onclick="saveEmotion()" class="mt-4 px-5 py-2 bg-purple-600 text-white rounded-lg">บันทึกอารมณ์</button>
     <p id="emotion-msg" class="mt-2 text-green-600"></p>
   </div>
 
   <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
     <h2 class="text-2xl font-bold text-purple-700 mb-3">ไดอารี่ประจำวัน</h2>
+    <textarea id="diary-input" class="w-full h-28 p-3 border rounded-lg border-purple-200" placeholder="เขียนความรู้สึกของวันนี้…"></textarea>
 
-    <textarea id="diary-input"
-              class="w-full h-28 p-3 border rounded-lg border-purple-200"
-              placeholder="เขียนความรู้สึกของวันนี้…"></textarea>
-
-    <button onclick="saveDiary()"
-            class="mt-3 px-5 py-2 bg-purple-600 text-white rounded-lg">บันทึก</button>
+    <button onclick="saveDiary()" class="mt-3 px-5 py-2 bg-purple-600 text-white rounded-lg">บันทึก</button>
 
     <div id="diary-list" class="mt-4"></div>
   </div>
 
   <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
     <h2 class="text-2xl font-bold text-purple-700 mb-3">⭐ ดาวเด็กดี</h2>
-    <button onclick="addStar()"
-            class="px-5 py-2 bg-yellow-400 text-black rounded-lg">เพิ่มดาว</button>
+    <button onclick="addStar()" class="px-5 py-2 bg-yellow-400 text-black rounded-lg">เพิ่มดาว</button>
     <p id="star-count" class="text-xl mt-2 text-purple-700"></p>
   </div>
+
 </section>
 
-<!-- ===========================================================
-                      TEACHER SECTION
-=========================================================== -->
+<!-- TEACHER -->
 <section id="teacher-section" class="max-w-3xl mx-auto mt-8 hidden">
-
   <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
     <h2 class="text-2xl font-bold text-purple-700 mb-4">รายชื่อนักเรียน</h2>
 
@@ -109,9 +95,7 @@ body {
   </div>
 </section>
 
-<!-- ===========================================================
-                      ADMIN SECTION
-=========================================================== -->
+<!-- ADMIN -->
 <section id="admin-section" class="max-w-3xl mx-auto mt-8 hidden">
 
   <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
@@ -134,9 +118,7 @@ body {
   </div>
 </section>
 
-<!-- ===========================================================
-                      JAVASCRIPT LOGIC
-=========================================================== -->
+<!-- JAVASCRIPT -->
 <script>
 let db = JSON.parse(localStorage.getItem("startrackDB")) || {
   students: {
@@ -148,7 +130,6 @@ let db = JSON.parse(localStorage.getItem("startrackDB")) || {
 
 let selectedEmotion = "";
 
-/* -------------------- SWITCH ROLE -------------------- */
 function switchRole(role){
   document.querySelectorAll("section").forEach(sec=>sec.classList.add("hidden"));
   document.getElementById(role+"-section").classList.remove("hidden");
@@ -158,10 +139,8 @@ function switchRole(role){
   if(role==="admin") loadAdmin();
 }
 
-/* -------------------- STUDENT -------------------- */
 function selectEmotion(e){
   selectedEmotion = e;
-  event.target.classList.add("bg-pink-200");
 }
 
 function saveEmotion(){
@@ -206,7 +185,6 @@ function addStar(){
   loadStudent();
 }
 
-/* -------------------- TEACHER -------------------- */
 function loadTeacher(){
   let tb = document.getElementById("teacher-student-table");
   tb.innerHTML = "";
@@ -219,8 +197,7 @@ function loadTeacher(){
         <td class="border py-2">${st.emotion || "-"}</td>
         <td class="border py-2">${st.stars}</td>
         <td class="border py-2">
-          <button onclick="showDiary('${name}')"
-                  class="px-3 py-1 bg-purple-300 rounded-lg">ดู</button>
+          <button onclick="showDiary('${name}')" class="px-3 py-1 bg-purple-300 rounded-lg">ดู</button>
         </td>
       </tr>`;
   }
@@ -239,7 +216,6 @@ function showDiary(name){
   });
 }
 
-/* -------------------- ADMIN -------------------- */
 function loadAdmin(){
   loadAdminStarTable();
   drawChart();
