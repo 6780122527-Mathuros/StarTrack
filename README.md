@@ -1,220 +1,128 @@
 <!DOCTYPE html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>StarTrack DEMO</title>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StarTrack DEMO</title>
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+<!-- สามารถใช้บน GitHub Pages ได้ -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Sarabun font -->
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body {
+  font-family: 'Sarabun', Arial, sans-serif;
+  background: linear-gradient(135deg,#f4eaff,#d3ecfd);
+  color: #444;
+  margin: 0;
+}
+header {
+  text-align: center;
+  background: #fcecfb;
+  border-bottom:2px solid #e5d9f7;
+  padding-top:1.7em; padding-bottom:.3em;
+}
+h1 { color: #a645ae; margin:1.5em 0 .1em 0;}
+nav { text-align:center; padding:1.1em; background:#f2f7fd; }
+.rolebtn {
+  background:#e9dfff;
+  color: #86398e;
+  font-size:1.19em;
+  border:none;
+  border-radius:11px;
+  padding:.8em 2.2em;
+  margin:.4em;
+  cursor:pointer;
+}
+.rolebtn:hover {background: #e4e5ff;}
 
-    <!-- React & ReactDOM (CDN แบบที่ GitHub Pages รองรับแน่นอน) -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+section {
+  max-width: 930px;
+  margin: 2em auto;
+  background: #fffefe;
+  border-radius: 23px;
+  padding:2em 2.2em;
+  box-shadow: 0 4px 25px #e4eaf4cc;
+}
+.box {
+  background: #f7f9fd;
+  border-radius: 15px;
+  padding:1.35em 2em;
+  margin-bottom:2em;
+  box-shadow:0 1px 18px #e7e1fa60;
+}
+</style>
+</head>
 
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide-react/dist/umd/lucide-react.min.js"></script>
+<body>
+<header>
+  <h1>StarTrack DEMO</h1>
+  <div style="color:#a14f88;">ระบบติดตามอารมณ์และดาวเด็กดี</div>
+</header>
 
-    <!-- Recharts -->
-    <script src="https://unpkg.com/recharts/umd/Recharts.min.js"></script>
+<nav>
+  <button class="rolebtn" onclick="switchRole('student')">👦 นักเรียน</button>
+  <button class="rolebtn" onclick="switchRole('teacher')">👩‍🏫 ครู</button>
+  <button class="rolebtn" onclick="switchRole('admin')">🏫 ผู้บริหาร</button>
+  <button class="rolebtn" style="background:#e67c96;color:white;float:right;" onclick="location.reload()">ออกจากระบบ</button>
+</nav>
 
-    <!-- Google GenAI (ใช้แบบ UMD) -->
-    <script src="https://unpkg.com/@google/generative-ai/dist/index.umd.js"></script>
+<!-- ===================== STUDENT ===================== -->
+<section id="student-section" style="display:none">
+  <div class="box">
+    <h2>นักเรียน</h2>
+    <!-- ⭐ วางโค้ดฟีเจอร์จริงของนักเรียน เช่น อารมณ์ รายงานประจำวัน กราฟ ฯลฯ -->
+    <div>กรุณานำโค้ดฟีเจอร์ student มาใส่ที่นี่</div>
+  </div>
+</section>
 
-    <style>
-      body {
-        font-family: 'Sarabun', Arial, sans-serif;
-        background: linear-gradient(135deg,#f4eaff,#d3ecfd);
-        color: #444;
-        margin: 0;
-        min-height: 100vh;
-      }
-      header {
-        text-align: center;
-        background: #fcecfb;
-        border-bottom:2px solid #e5d9f7;
-        padding-top:1.7em; padding-bottom:.3em;
-      }
-      h1 { color: #a645ae; margin:0.5em 0 .1em 0; font-size: 2em; font-weight: bold; }
-      nav { text-align:center; padding:1.1em; background:#f2f7fd; }
-      
-      .rolebtn {
-        background:#e9dfff;
-        color: #86398e;
-        font-size:1.19em;
-        border:none;
-        border-radius:11px;
-        padding:.8em 2.2em;
-        margin:.4em;
-        cursor:pointer;
-        transition: background 0.2s;
-      }
-      .rolebtn:hover, .rolebtn.active { background: #d4c5f5; }
-      
-      section {
-        max-width: 930px;
-        margin: 2em auto;
-        background: #fffefe;
-        border-radius: 23px;
-        padding:2em 2.2em;
-        box-shadow: 0 4px 25px #e4eaf4cc;
-      }
-      h2 {
-        color:#a645ae;
-        margin-top:0;
-        letter-spacing:.03em;
-        font-weight: bold;
-        font-size: 1.5em;
-        margin-bottom: 0.8em;
-      }
-      
-      .box {
-        background: #f7f9fd;
-        border-radius: 15px;
-        padding:1.35em 2em;
-        margin-bottom:2em;
-        box-shadow:0 1px 18px #e7e1fa60;
-      }
-      .box h3 {
-        color:#7193a6;
-        font-weight: bold; 
-        font-size: 1.2em; 
-        margin-bottom: 1em; 
-        display: flex; 
-        align-items: center; 
-        gap: 8px;
-      }
-      
-      .star { color: #ffe780; font-size:1.4em; text-shadow: 0 0 1px #dcbba0; }
-      .good {color:#399d2f;}
-      .bad {color:#d04a6a;}
-      
-      .stats-table {
-        margin-top: .7em;
-        width: 100%;
-        background: #f2f7fd;
-        border-collapse: collapse;
-      }
-      .stats-table th, .stats-table td {
-        border: 1px solid #ccc;
-        padding: .5em .7em;
-        text-align: left;
-      }
-      .stats-table th { background: #f9e3ff; color: #86398e; font-weight: bold;}
-      
-      .emotion-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
-      .emotion-btns button {
-        margin:.4em .13em;
-        font-size:1.5em;
-        padding:.2em .5em;
-        border-radius:50%;
-        border: 1.3px solid #b6c5ee;
-        background:#e6f6ff;
-        cursor: pointer;
-        transition: transform 0.1s;
-      }
-      .emotion-btns button.selected,
-      .emotion-btns button:hover {
-        background:#ffd7ef;
-        border-color:#bb5ecf;
-        transform: scale(1.1);
-      }
-      
-      textarea, select, input[type="text"], input[type="number"], input[type="datetime-local"] {
-        width: 100%;
-        padding:.7em;
-        margin:.3em 0 1em 0;
-        border-radius: 7px;
-        border: 1.25px solid #d3ecfd;
-        background: #fff6f8;
-        outline: none;
-        color: #555;
-      }
-      
-      .btn-main, .test-btn, .appoint-btn {
-        background: #a651b1;
-        color: #fff;
-        border: none;
-        border-radius: 9px;
-        font-weight:bold;
-        font-size:1.07em;
-        padding:.7em 2em;
-        margin:.8em 0;
-        box-shadow:0 1px 7px #ede0fb40;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-      }
-      .btn-main:hover, .test-btn:hover, .appoint-btn:hover {background:#e6c6f5; color:#640a73;}
-      
-      .test-btn{background:#b1e5e0;color:#446e67; margin:0 .7em 0 0;}
-      .appoint-btn{background:#ffc285;color:#764108;}
-      
-      .diary-list {margin:1em 0;}
-      .diary-entry {
-        background: #f3f1fc;
-        border-radius:10px;
-        margin-bottom:.5em;
-        padding:.7em 1em;
-        position: relative;
-      }
-      .diary-date {font-size:.93em; color:#91a;display:block; margin-bottom: 4px;}
-      .diary-del-btn {
-        float:right;
-        background: #ffd7ef;
-        color: #d13d84;
-        border-radius: 6px;
-        padding: .08em .7em;
-        cursor: pointer;
-        border: none;
-      }
-      
-      .reward-box {
-        background: #e6f6ff;
-        border-radius:11px;
-        padding:1em 1em;
-        margin:1em 0;
-        color:#608498;
-      }
-      
-      .test-res {
-        margin:1em 0;
-        background: #d9fff5;
-        color:#575;
-        border-radius:.7em;
-        padding:1em;
-      }
-      .piebox {text-align:center; background:#f2f7fd; border-radius:12px;margin:1em 0; padding: 1em;}
-      .historylist {
-        background:#e6f6ff;
-        border-radius:10px;
-        padding:.8em;
-      }
-      .msgbox {
-        background:#f1ffea;
-        padding:1em 1.5em;
-        border-radius:10px;
-        margin-top:.9em;
-      }
-      .msg-entry {margin-bottom:.68em;}
-      
-      /* Reset generic styles */
-      .bg-white { background-color: transparent !important; }
-      .border { border-width: 0 !important; }
-    </style>
+<!-- ===================== TEACHER ===================== -->
+<section id="teacher-section" style="display:none">
+  <div class="box">
+    <h2>ครู</h2>
+    <!-- ⭐ วางโค้ดฟีเจอร์จริงของครู เช่น dashboard class ห้องเรียน สถิติ ฯลฯ -->
+    <div>กรุณานำโค้ดฟีเจอร์ teacher มาใส่ที่นี่</div>
+  </div>
+</section>
 
-  </head>
-  <body>
+<!-- ===================== ADMIN ===================== -->
+<section id="admin-section" style="display:none">
+  <div class="box">
+    <h2>ผู้บริหาร</h2>
+    <!-- ⭐ วางโค้ดฟีเจอร์จริงของ admin เช่น ภาพรวมสถานศึกษา Big Data -->
+    <div>กรุณานำโค้ดฟีเจอร์ admin มาใส่ที่นี่</div>
+  </div>
+</section>
 
-    <div id="root"></div>
+<script>
+/* -------------------- SWITCH ROLE -------------------- */
+function switchRole(role) {
+  document.getElementById("student-section").style.display = "none";
+  document.getElementById("teacher-section").style.display = "none";
+  document.getElementById("admin-section").style.display = "none";
 
-    <!-- โหลดโค้ด React ของคุณจากไฟล์ app.js -->
-    <script src="app.js"></script>
+  if (role === "student") document.getElementById("student-section").style.display = "block";
+  if (role === "teacher") document.getElementById("teacher-section").style.display = "block";
+  if (role === "admin") document.getElementById("admin-section").style.display = "block";
+}
 
-  </body>
+/* ----- ถ้าจะใช้ Pie Chart ----- */
+function drawPie(elementId, labels, values) {
+  new Chart(document.getElementById(elementId), {
+    type: "pie",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          data: values,
+          backgroundColor: ["#b1e5e0","#a651b1","#ffd7ef","#ffe780","#bfffa5","#8dd6ee"]
+        }
+      ]
+    }
+  });
+}
+</script>
+
+</body>
 </html>
