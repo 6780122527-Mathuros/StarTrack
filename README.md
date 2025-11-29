@@ -1,259 +1,146 @@
-
-<html lang="th">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>StarTrack DEMO</title>
-
-<!-- FIX: Tailwind CDN เวอร์ชันเสถียร -->
-<script src="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.10/dist/tailwind.min.js"></script>
-
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- FIX: Chart.js เวอร์ชันที่ทำงานบน GitHub Pages แน่นอน -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
-<style>
-body {
-  font-family: 'Sarabun', Arial, sans-serif;
-  background: linear-gradient(135deg,#f4eaff,#d3ecfd);
-  color: #444;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Good Student Stars - Student Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f6fa; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 32px 24px; }
+    h1 { color: #27589c; text-align: center; }
+    .balance { text-align: center; font-size: 2em; margin-bottom: 8px; color: #ffbf00;}
+    table { width: 100%; margin: 10px 0 24px 0; border-collapse: collapse;}
+    th, td { padding: 8px 8px; }
+    th { background: #f4f6fa; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    .redemption-form { margin: 18px 0;}
+    .star-positive { color: #30b030; }
+    .star-negative { color: #d03b3b; }
+    label { margin-right: 10px; font-weight: bold;}
+    select, button { padding: 6px 12px; border-radius: 4px; border: 1px solid #ccc;}
+    button { background: #27589c; color: #fff; }
+    .reward-opt { font-size: 1em; }
+    .history-list, .redeem-list { list-style: none; padding: 0; }
+    .success-msg { color: #15803d; margin-top: 8px;}
+    .pending { color: #edb50a; }
+    .approved { color: #22c55e; }
+  </style>
 </head>
-
-<body class="pb-20">
-
-<header class="text-center bg-pink-100 border-b-2 border-purple-200 py-6">
-  <h1 class="text-4xl font-bold text-purple-600">StarTrack DEMO</h1>
-  <p class="text-pink-700 text-lg">ระบบติดตามอารมณ์และดาวเด็กดี</p>
-</header>
-
-<nav class="text-center bg-blue-50 py-4 sticky top-0 shadow z-50">
-  <button onclick="switchRole('student')" class="px-6 py-2 mx-1 rounded-lg bg-purple-100 hover:bg-purple-200">👦 นักเรียน</button>
-  <button onclick="switchRole('teacher')" class="px-6 py-2 mx-1 rounded-lg bg-purple-100 hover:bg-purple-200">👩‍🏫 ครู</button>
-  <button onclick="switchRole('admin')" class="px-6 py-2 mx-1 rounded-lg bg-purple-100 hover:bg-purple-200">🏫 ผู้บริหาร</button>
-  <button onclick="location.reload()" class="px-5 py-2 bg-red-400 text-white rounded-lg float-right">ออกจากระบบ</button>
-</nav>
-
-<!-- STUDENT -->
-<section id="student-section" class="max-w-3xl mx-auto mt-8 hidden">
-
-  <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
-    <h2 class="text-2xl font-bold text-purple-700 mb-3">เลือกอารมณ์วันนี้</h2>
-    <div class="flex space-x-3 text-4xl">
-      <button onclick="selectEmotion('happy')" class="emotion">😄</button>
-      <button onclick="selectEmotion('normal')" class="emotion">😐</button>
-      <button onclick="selectEmotion('sad')" class="emotion">😢</button>
-      <button onclick="selectEmotion('angry')" class="emotion">😡</button>
-      <button onclick="selectEmotion('surprise')" class="emotion">😲</button>
+<body>
+  <div class="container">
+    <h1>Good Student Stars</h1>
+    <div class="balance" id="star-balance">⭐ 30 Stars</div>
+    
+    <h3>Star History</h3>
+    <table id="star-history">
+      <tr>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Reason</th>
+        <th>Given By</th>
+      </tr>
+      <!-- rows will be inserted by JS -->
+    </table>
+    
+    <div class="redemption-form">
+      <h3>Redeem your Stars</h3>
+      <form id="redeem-form">
+        <label>Choose reward:
+          <select id="reward-select">
+            <option value="break">5-minute break (10 stars)</option>
+            <option value="stationery">Stationery coupon (12 stars)</option>
+            <option value="food">Food/drink coupon (15 stars)</option>
+          </select>
+        </label>
+        <button type="submit">Redeem</button>
+      </form>
+      <div class="success-msg" id="redeem-msg"></div>
     </div>
-
-    <button onclick="saveEmotion()" class="mt-4 px-5 py-2 bg-purple-600 text-white rounded-lg">บันทึกอารมณ์</button>
-    <p id="emotion-msg" class="mt-2 text-green-600"></p>
-  </div>
-
-  <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
-    <h2 class="text-2xl font-bold text-purple-700 mb-3">ไดอารี่ประจำวัน</h2>
-    <textarea id="diary-input" class="w-full h-28 p-3 border rounded-lg border-purple-200" placeholder="เขียนความรู้สึกของวันนี้…"></textarea>
-
-    <button onclick="saveDiary()" class="mt-3 px-5 py-2 bg-purple-600 text-white rounded-lg">บันทึก</button>
-
-    <div id="diary-list" class="mt-4"></div>
-  </div>
-
-  <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
-    <h2 class="text-2xl font-bold text-purple-700 mb-3">⭐ ดาวเด็กดี</h2>
-    <button onclick="addStar()" class="px-5 py-2 bg-yellow-400 text-black rounded-lg">เพิ่มดาว</button>
-    <p id="star-count" class="text-xl mt-2 text-purple-700"></p>
-  </div>
-
-</section>
-
-<!-- TEACHER -->
-<section id="teacher-section" class="max-w-3xl mx-auto mt-8 hidden">
-  <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
-    <h2 class="text-2xl font-bold text-purple-700 mb-4">รายชื่อนักเรียน</h2>
-
-    <table class="w-full text-center border">
+    <h3>Your Redemptions</h3>
+    <table>
       <thead>
-        <tr class="bg-purple-100">
-          <th class="border py-2">ชื่อ</th>
-          <th class="border py-2">อารมณ์ล่าสุด</th>
-          <th class="border py-2">ดาว</th>
-          <th class="border py-2">ดูไดอารี่</th>
-        </tr>
+        <tr><th>Reward</th><th>Date</th><th>Status</th></tr>
       </thead>
-      <tbody id="teacher-student-table"></tbody>
+      <tbody id="redemption-history">
+        <!-- rows will be injected by JS -->
+      </tbody>
     </table>
   </div>
+  <script>
+    // Demo Data -- In real system, this comes from the backend
+    let starHistory = [
+      {date: '2025-11-20', amount: +1, reason:'Helped classmate', teacher:'Mrs. Lee'},
+      {date: '2025-11-22', amount: -1, reason:'Late homework', teacher:'Mr. Jones'},
+      {date: '2025-11-25', amount: +2, reason:'Excellent project', teacher:'Mrs. Smith'}
+    ];
+    let redemptions = [
+      {reward: '5-minute break', date: '2025-11-27', status: 'pending'},
+      {reward: 'Stationery coupon', date: '2025-11-15', status: 'approved'},
+    ];
+    let rewards = {
+      break: { label:"5-minute break", cost:10 },
+      stationery: { label:"Stationery coupon", cost:12 },
+      food: { label:"Food/drink coupon", cost:15 }
+    };
 
-  <div class="bg-white shadow-xl rounded-2xl p-6">
-    <h2 class="text-2xl font-bold text-purple-700 mb-3">ไดอารี่ของนักเรียน</h2>
-    <div id="teacher-diary"></div>
-  </div>
-</section>
-
-<!-- ADMIN -->
-<section id="admin-section" class="max-w-3xl mx-auto mt-8 hidden">
-
-  <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
-    <h2 class="text-2xl font-bold text-purple-700">สถิติอารมณ์รวม</h2>
-    <canvas id="chart-emotion" class="mt-4"></canvas>
-  </div>
-
-  <div class="bg-white shadow-xl rounded-2xl p-6">
-    <h2 class="text-2xl font-bold text-purple-700">ตารางดาวเด็กดี</h2>
-
-    <table class="w-full text-center border mt-3">
-      <thead>
-        <tr class="bg-purple-100">
-          <th class="border py-2">ชื่อ</th>
-          <th class="border py-2">ดาว</th>
-        </tr>
-      </thead>
-      <tbody id="admin-star-table"></tbody>
-    </table>
-  </div>
-</section>
-
-<!-- JAVASCRIPT -->
-<script>
-let db = JSON.parse(localStorage.getItem("startrackDB")) || {
-  students: {
-    "เด็ก A": { emotion:"", diary:[], stars:0 },
-    "เด็ก B": { emotion:"", diary:[], stars:0 },
-    "เด็ก C": { emotion:"", diary:[], stars:0 }
-  }
-};
-
-let selectedEmotion = "";
-
-function switchRole(role){
-  document.querySelectorAll("section").forEach(sec=>sec.classList.add("hidden"));
-  document.getElementById(role+"-section").classList.remove("hidden");
-
-  if(role==="student") loadStudent();
-  if(role==="teacher") loadTeacher();
-  if(role==="admin") loadAdmin();
-}
-
-function selectEmotion(e){
-  selectedEmotion = e;
-}
-
-function saveEmotion(){
-  db.students["เด็ก A"].emotion = selectedEmotion;
-  localStorage.setItem("startrackDB", JSON.stringify(db));
-  document.getElementById("emotion-msg").innerText = "✔ บันทึกแล้ว";
-}
-
-function saveDiary(){
-  let txt = document.getElementById("diary-input").value;
-  if(!txt) return;
-
-  db.students["เด็ก A"].diary.push({
-    text: txt,
-    date: new Date().toLocaleString()
-  });
-
-  localStorage.setItem("startrackDB", JSON.stringify(db));
-  document.getElementById("diary-input").value="";
-  loadStudent();
-}
-
-function loadStudent(){
-  let list = document.getElementById("diary-list");
-  list.innerHTML = "";
-
-  db.students["เด็ก A"].diary.forEach((d,i)=>{
-    list.innerHTML += `
-      <div class="bg-purple-50 p-3 rounded-xl mb-2 border">
-        <div class="font-bold">${d.date}</div>
-        ${d.text}
-      </div>`;
-  });
-
-  document.getElementById("star-count").innerText =
-    "จำนวนดาว: " + db.students["เด็ก A"].stars;
-}
-
-function addStar(){
-  db.students["เด็ก A"].stars++;
-  localStorage.setItem("startrackDB", JSON.stringify(db));
-  loadStudent();
-}
-
-function loadTeacher(){
-  let tb = document.getElementById("teacher-student-table");
-  tb.innerHTML = "";
-
-  for(let name in db.students){
-    let st = db.students[name];
-    tb.innerHTML += `
-      <tr>
-        <td class="border py-2">${name}</td>
-        <td class="border py-2">${st.emotion || "-"}</td>
-        <td class="border py-2">${st.stars}</td>
-        <td class="border py-2">
-          <button onclick="showDiary('${name}')" class="px-3 py-1 bg-purple-300 rounded-lg">ดู</button>
-        </td>
-      </tr>`;
-  }
-}
-
-function showDiary(name){
-  let box = document.getElementById("teacher-diary");
-  box.innerHTML = `<h3 class="text-xl font-bold mb-2">${name}</h3>`;
-
-  db.students[name].diary.forEach(d=>{
-    box.innerHTML += `
-      <div class="bg-purple-50 p-3 rounded-xl mb-2 border">
-        <div class="font-bold">${d.date}</div>
-        ${d.text}
-      </div>`;
-  });
-}
-
-function loadAdmin(){
-  loadAdminStarTable();
-  drawChart();
-}
-
-function loadAdminStarTable(){
-  let tb = document.getElementById("admin-star-table");
-  tb.innerHTML = "";
-
-  for(let s in db.students){
-    tb.innerHTML += `
-      <tr>
-        <td class="border py-2">${s}</td>
-        <td class="border py-2">${db.students[s].stars}</td>
-      </tr>`;
-  }
-}
-
-function drawChart(){
-  let counts = {happy:0, normal:0, sad:0, angry:0, surprise:0};
-
-  for(let s in db.students){
-    let e = db.students[s].emotion;
-    if(e) counts[e]++;
-  }
-
-  new Chart(document.getElementById("chart-emotion"), {
-    type:"pie",
-    data:{
-      labels:["ดีใจ", "เฉยๆ", "เศร้า", "โกรธ", "ประหลาดใจ"],
-      datasets:[{
-        data:[ counts.happy, counts.normal, counts.sad, counts.angry, counts.surprise ],
-        backgroundColor:["#ffc2df","#b1e5e0","#ffd480","#ff9999","#cdb6ff"]
-      }]
+    function updateStarBalance() {
+      let stars = starHistory.reduce((sum, tx) => sum + tx.amount, 0);
+      document.getElementById('star-balance').textContent = `⭐ ${stars} Stars`;
     }
-  });
-}
-</script>
+    function renderStarHistory() {
+      let rows = '';
+      for (let tx of starHistory) {
+        rows += `<tr>
+          <td>${tx.date}</td>
+          <td class="${tx.amount>0?'star-positive':'star-negative'}">${tx.amount>0?'+':''}${tx.amount}</td>
+          <td>${tx.reason}</td>
+          <td>${tx.teacher}</td>
+        </tr>`;
+      }
+      document.getElementById('star-history').innerHTML += rows;
+    }
+    function renderRedemptions() {
+      let rows = '';
+      for (let r of redemptions) {
+        rows += `<tr>
+          <td>${r.reward}</td>
+          <td>${r.date}</td>
+          <td class="${r.status}">${r.status.charAt(0).toUpperCase() + r.status.slice(1)}</td>
+        </tr>`;
+      }
+      document.getElementById('redemption-history').innerHTML = rows;
+    }
 
+    document.getElementById('redeem-form').onsubmit = function(e) {
+      e.preventDefault();
+      let sel = document.getElementById('reward-select');
+      let rewardKey = sel.value;
+      let cost = rewards[rewardKey].cost || 0;
+      let stars = starHistory.reduce((sum, tx) => sum + tx.amount, 0);
+      let msg = document.getElementById('redeem-msg');
+      if (stars >= cost) {
+        // Deduct stars and add redemption history (Demo only!)
+        starHistory.push({date: new Date().toISOString().slice(0,10), amount: -cost, reason: 'Redemption: '+rewards[rewardKey].label, teacher:'System'});
+        redemptions.unshift({reward: rewards[rewardKey].label, date: new Date().toISOString().slice(0,10), status: 'pending'});
+        updateStarBalance();
+        document.getElementById('star-history').innerHTML =
+          `<tr>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Reason</th>
+            <th>Given By</th>
+          </tr>`;
+        renderStarHistory();
+        renderRedemptions();
+        msg.textContent = "Redemption submitted for approval!";
+      } else {
+        msg.textContent = "Not enough stars for this reward.";
+      }
+      setTimeout(()=>{ msg.textContent = ""; }, 2500);
+    };
+
+    // Initial render
+    updateStarBalance();
+    renderStarHistory();
+    renderRedemptions();
+  </script>
 </body>
 </html>
