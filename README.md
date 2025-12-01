@@ -1,40 +1,37 @@
-# HappySchool
-
-ระบบติดตามอารมณ์และดาวเด็กดี (HappySchool) คือแอปพลิเคชันตัวอย่างสำหรับติดตามสุขภาพจิตของนักเรียน ให้รางวัลด้วยระบบดาว และวิเคราะห์ข้อมูลสำหรับคุณครูและผู้บริหาร ขับเคลื่อนด้วย **Gemini API**
-
-## Features
-
-- **Student Dashboard**: บันทึกไดอารี่ประจำวัน, เช็คอินอารมณ์, รับคำปรึกษาจาก AI, และดูนัดหมายครู
-- **Teacher Dashboard**: จัดการดาวเด็กดี, อนุมัตินัดหมาย, บันทึกอารมณ์ตนเอง
-- **Admin Dashboard**: ดูภาพรวมสถิติอารมณ์ทั้งโรงเรียน
-
-## Tech Stack
-
-- React (Vite)
-- TypeScript
-- Tailwind CSS
-- Lucide React (Icons)
-- Recharts (Charts)
-- @google/genai (Gemini API)
-
-## Getting Started
-
-1.  **Clone the repository**
-2.  **Install dependencies**:
-    ```bash
-    npm install
-    ```
-3.  **Setup Environment Variables**:
-    - Copy `.env.example` to `.env`
-    - Enter your Google GenAI API Key in `.env`:
-      ```
-      API_KEY=your_actual_api_key
-      ```
-4.  **Run the development server**:
-    ```bash
-    npm run dev
-    ```
-
-## License
-
-MIT
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HappySchool</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background: linear-gradient(135deg, #f4eaff 0%, #d3ecfd 100%);
+      color: #444;
+    }
+  </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.0",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1",
+    "vite": "https://aistudiocdn.com/vite@^7.2.4"
+  }
+}
+</script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
