@@ -50,7 +50,7 @@ const App: React.FC = () => {
     <div className="min-h-screen pb-12 font-['Sarabun']">
       {/* Header */}
       <header className="text-center bg-[#fcecfb] border-b-2 border-[#e5d9f7] pt-[1.7em] pb-[0.3em]">
-        <h1 className="text-[#a645ae] text-3xl font-bold mt-[1.5em] mb-[0.1em]">StarTrack DEMO</h1>
+        <h1 className="text-[#a645ae] text-3xl font-bold mt-[1.5em] mb-[0.1em]">HappySchool</h1>
         <div className="text-[#a14f88] mb-4">ระบบติดตามอารมณ์และดาวเด็กดี</div>
       </header>
 
@@ -116,7 +116,7 @@ const App: React.FC = () => {
       </section>
 
       <footer className="text-center text-gray-400 text-sm mt-12 mb-4">
-        © 2024 StarTrack Demo System. Powered by Gemini API.
+        © 2024 HappySchool System. Powered by Gemini API.
       </footer>
     </div>
   );
